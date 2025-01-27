@@ -2,6 +2,23 @@
 # Date: 2024-12-07
 # Program Details: This Program is a fully functional wave based attack game WITH a miniboss and a final boss it is called resonance and you collect music discs and items for power
 
+#Options for code to view 
+#1. SETUP CODE
+#2. HEALTHPOT CODE
+#3. WAVE CODE
+#4. BOSS CODE
+#5. MINIBOSS CODE
+#6. ENEMY CODE
+#7. ATTACK CODE
+#8. MOVEMENT CODE
+#9. INVENTORY CODE
+#10. PAUSE CODE
+#11. MIXER CODE
+#12. DISC CODE
+#13. CLASSES CODE
+#14. STARTSCREEN CODE
+#15. YOUDIED CODE
+
 import os, sys, ULTIMATE_DEFS, enemies, random, items
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import manager
@@ -11,7 +28,6 @@ from PySide6.QtCore import QTimer, Qt
 from PySide6.QtGui import QIcon, QPixmap
 from PySide6.QtWidgets import QListWidgetItem, QListWidget, QLabel, QWidget
 from pygame import mixer
-
 
 if __name__ == "__main__":    
     manager.start()
@@ -122,10 +138,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         backinblack = items.item(QPixmap(u"images/backinblack.png"), "backinblack.png", "backinblack", "Back in Black", "A special disc that \n when equipped can be \n used to activate \n damaging pillars of fire \n that periodically deal \n damage for 15 seconds \n (not affected by def)", "background-color: rgb(170, 170, 255);", 0, 0, 0, 0, 0)
         thickofit = items.item(QPixmap(u"images/thickofit.jpg"), "thickofit.jpg", "thickofit", "Thick of It", "A special disc that \n when equipped can be \n used to repel minor \n enemies for 30 seconds \n when enemies reach an \n edge they will be \n knocked to middle", "background-color: rgb(170, 170, 255);", 0, 0, 0, 0, 0)
         imstillstanding = items.item(QPixmap(u"images/imstillstanding.jpg"), "imstillstanding.jpg", "imstillstanding", "I S Standing", "A special disc that \n when equipped can be \n used to revive \n yourself on 25 hp if \n you take a fatal blow \n and making you \n invincible for 10 seconds", "background-color: rgb(170, 170, 255);", 0, 0, 0, 0, 0)
+        sixhundredstrike = items.item
         #healthpot
         healthpot = items.healthpot(QPixmap(u"images/healthpot.jpg"), "Health Potion", "A potion that heals \n 50 health instantly", "background-color: rgb(204, 0, 153);")
-        #self.allitems = [timesword,  mosquitorapier, futurebow, slimebow, ironarmor, thornmail, wingedrunners, ironboots, armoredheart, cyborgheart, backinblack, thickofit, imstillstanding, healthpot, healthpot, healthpot, healthpot, healthpot, healthpot]
-        self.allitems = [timesword, thickofit, futurebow]
+        self.allitems = [timesword,  mosquitorapier, futurebow, slimebow, ironarmor, thornmail, wingedrunners, ironboots, armoredheart, cyborgheart, backinblack, thickofit, imstillstanding, healthpot, healthpot, healthpot, healthpot, healthpot, healthpot]
+        #self.allitems = [timesword, thickofit, futurebow]
         self.fireball_list = []
         self.fireball_timers = [QTimer()]*10
         self.sonic_movement()
@@ -560,7 +577,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.playerconfused = True
                     self.confusionvalid = False
                     QTimer.singleShot(10000, lambda: self.boss_confusionend())
-                    self.playerhealth -= self.bossclass.rangedattack+self.playerdefense
+                    self.dmg = self.bossclass.rangedattack+self.playerdefense
+                    if self.dmg < 0:
+                        self.dmg = 0
+                    self.playerhealth -= self.dmg
                     self.lbl_healthbar.setFixedSize(self.playerhealth * 4, 41)
                     self.lbl_playerhealth.setText(str(self.playerhealth))
                     if self.playerhealth <= 0:
@@ -660,7 +680,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.warning_label1.setStyleSheet("")
             if self.playerinvicible == False:
                 if ULTIMATE_DEFS.collision(self.warning_label1, self.lbl_player):
-                    self.playerhealth -= self.bossclass.rangedattack+self.playerdefense
+                    self.dmg = self.bossclass.rangedattack+self.playerdefense
+                    if self.dmg < 0:
+                        self.dmg = 0
+                    self.playerhealth -= self.dmg
                     self.lbl_healthbar.setFixedSize(self.playerhealth * 4, 41)
                     self.lbl_playerhealth.setText(str(self.playerhealth))
                     if self.lbl_playerhealth.text() <= "0":
@@ -759,7 +782,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 else:
                     self.gameover()
             if self.playerthorns == True:
-                self.lbl_bosshealth.setText(str(int(self.lbl_bosshealth.text())-3)) #0 cuz there can only be 1 boss
+                self.dmg = (int(self.lbl_bosshealth.text())-3)
+                if self.dmg < 0:
+                    self.dmg = 0
+                self.lbl_bosshealth.setText(str(self.dmg)) #0 cuz there can only be 1 boss
                 try:
                     self.lbl_bosshealthbar.setFixedSize(int(self.lbl_bosshealth.text())*2, 41)
                 except:
@@ -1026,7 +1052,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         self.fuzzie.setVisible(False)
                         self.fuzzie.deleteLater()
                         self.fuzzievalid = False
-                        self.playerhealth -= self.minibossclass.rangedattack+self.playerdefense
+                        self.dmg = self.minibossclass.rangedattack+self.playerdefense
+                        if self.dmg < 0:
+                            self.dmg = 0
+                        self.playerhealth -= self.dmg
                         try:
                             self.lbl_healthbar.setFixedSize(self.playerhealth * 4, 41)
                         except:
@@ -1099,7 +1128,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def minibossattackcollision(self):
         if self.playerinvicible == False:
             if ULTIMATE_DEFS.collision(self.lbl_player, self.miniboss_label):
-                self.playerhealth -= self.minibossclass.attack+self.playerdefense
+                self.dmg = self.minibossclass.attack+self.playerdefense
+                if self.dmg < 0:
+                    self.dmg = 0
+                self.playerhealth -= self.dmg
                 try:
                     if self.maxhealth == 100:
                         self.lbl_healthbar.setFixedSize(self.playerhealth * 4, 41)
@@ -1353,7 +1385,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     randy = random.randint(100, 800)
                     self.sonic_label.move (randx, randy)
                     self.sonichp_label.move(randx+38, randy-32)
-                    self.playerhealth -= self.sonic.attack+self.playerdefense
+                    self.dmg = self.sonic.attack+self.playerdefense
+                    if self.dmg < 0:
+                        self.dmg = 0
+                    self.playerhealth -= self.dmg
                     try:
                         if self.maxhealth == 100:
                             self.lbl_healthbar.setFixedSize(self.playerhealth * 4, 41)
@@ -1517,7 +1552,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                     self.attack_list[i].move(self.attack_list[i].x()-x, self.attack_list[i].y()-y)
                                 if self.playerconfused == True:
                                     self.confusion.move(self.confusion.x()-x, self.confusion.y()-y)
-                            self.playerhealth -= attack+self.playerdefense
+                            self.dmg = attack+self.playerdefense
+                            if self.dmg < 0:
+                                self.dmg = 0
+                            self.playerhealth -= self.dmg
                             try:
                                 if self.maxhealth == 100:
                                     self.lbl_healthbar.setFixedSize(self.playerhealth * 4, 41)#the times four is because self.playerhealth is 4 times as big as the players hp
@@ -1607,7 +1645,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     if ULTIMATE_DEFS.collision(self.lbl_player, fireball):
                         self.fireball_timers[i].stop()
                         fireball.setVisible(False)
-                        self.playerhealth -= self.enemyclass_list[i].rangedattack+self.playerdefense
+                        self.dmg = self.enemyclass_list[i].rangedattack+self.playerdefense
+                        if self.dmg < 0:
+                            self.dmg = 0
+                        self.playerhealth -= self.dmg
                         try:
                             if self.maxhealth == 100:
                                 self.lbl_healthbar.setFixedSize(self.playerhealth * 4, 41)#the times four is because self.playerhealth is 4 times as big as the players hp
@@ -1750,7 +1791,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             #enemies
             for i, enemy in enumerate(self.enemylabels_list):
                 if ULTIMATE_DEFS.collision(label, enemy):        
-                    self.enemyhplabels_list[i].setText(str(int(self.enemyhplabels_list[i].text())-self.playerattackdmg+self.enemyclass_list[i].defense))
+                    self.dmg = int(self.enemyhplabels_list[i].text())-self.playerattackdmg+self.enemyclass_list[i].defense
+                    if self.dmg < 0:
+                        self.dmg = 0
+                    self.enemyhplabels_list[i].setText(str(self.dmg))
                     if int(self.enemyhplabels_list[i].text()) <= 0:
                         self.enemydeath(i)
                     if self.playerlifesteal == True:
@@ -1761,7 +1805,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             try: 
                 for i, name in enumerate(self.boss_labels):
                     if ULTIMATE_DEFS.collision(label, name):
-                        self.lbl_bosshealth.setText(str(int(self.lbl_bosshealth.text())-self.playerattackdmg+self.bossclasslist[0].defense)) #0 cuz there can only be 1 boss
+                        self.dmg = int(self.lbl_bosshealth.text())-self.playerattackdmg+self.bossclasslist[0].defense
+                        if self.dmg < 0:
+                            self.dmg = 0
+                        self.lbl_bosshealth.setText(str(self.dmg)) #0 cuz there can only be 1 boss
                         try:
                             if self.lbl_bossname.text() == "The Ghost of the Forest":
                                 self.lbl_bosshealthbar.setFixedSize(int(self.lbl_bosshealth.text())*6, 41)
@@ -1908,13 +1955,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #pausing arrow if game is paused
         if self.pausestate == True:
             self.ranged.move(self.ranged.x()-self.rangedx, self.ranged.y()-self.rangedy)
-        #dmg
+        #self.dmg
         for i, enemy in enumerate(self.enemylabels_list):
             if ULTIMATE_DEFS.collision(self.ranged, enemy):
                 self.rangedtimer.stop()
                 self.ranged.deleteLater()
                 self.rangedmovementvalid = True
-                self.enemyhplabels_list[i].setText(str(int(self.enemyhplabels_list[i].text())-self.rangedattackdmg+self.enemyclass_list[i].defense))
+                self.dmg = int(self.enemyhplabels_list[i].text())-self.rangedattackdmg+self.enemyclass_list[i].defense
+                if self.dmg < 0:
+                    self.dmg = 0
+                self.enemyhplabels_list[i].setText(str(self.dmg))
                 if self.playerrangedknockback == True and self.enemyintlist[i] != 2:
                     if self.lbl_player.x() < enemy.x():
                         enemy.move(enemy.x()+200,enemy.y())
@@ -1937,7 +1987,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.rangedtimer.stop()
                     self.ranged.deleteLater()
                     self.rangedmovementvalid = True
-                    self.lbl_bosshealth.setText(str(int(self.lbl_bosshealth.text())-self.rangedattackdmg+self.bossclasslist[0].defense)) #0 cuz there can only be 1 boss
+                    self.dmg = (int(self.lbl_bosshealth.text())-self.rangedattackdmg+self.bossclasslist[0].defense)
+                    if self.dmg < 0:
+                        self.dmg = 0
+                    self.lbl_bosshealth.setText(str(self.dmg)) #0 cuz there can only be 1 boss
                 try:
                     if self.lbl_bossname.text() == "The Ghost of the Forest":
                         self.lbl_bosshealthbar.setFixedSize(int(self.lbl_bosshealth.text())*6, 41)
@@ -2009,7 +2062,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if self.bossdead == False:
                 if self.playerinvicible == False:
                     if ULTIMATE_DEFS.collision(self.lbl_player, self.boss_label):
-                        self.playerhealth -= self.bossclass.attack+self.playerdefense
+                        self.dmg = self.bossclass.attack+self.playerdefense
+                        if self.dmg < 0:
+                            self.dmg = 0
+                        self.playerhealth -= self.dmg
                         self.lbl_healthbar.setFixedSize(self.playerhealth * 4, 41)
                         self.lbl_playerhealth.setText(str(self.playerhealth))
                         if self.lbl_playerhealth.text() <= "0":
@@ -2404,8 +2460,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             name.setScaledContents(True)
             #enemies
             for i, enemy in enumerate(self.enemylabels_list):
-                if ULTIMATE_DEFS.collision(name, enemy):        
-                    self.enemyhplabels_list[i].setText(str(int(self.enemyhplabels_list[i].text())-5))
+                if ULTIMATE_DEFS.collision(name, enemy):   
+                    self.dmg = int(self.enemyhplabels_list[i].text())-5
+                    if self.dmg < 0:
+                        self.dmg = 0
+                    self.enemyhplabels_list[i].setText(str(self.dmg))
                     if int(self.enemyhplabels_list[i].text()) <= 0:
                         self.enemydeath(i)
                 else:
@@ -2414,7 +2473,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             try: 
                 for i, boss in enumerate(self.boss_labels):
                     if ULTIMATE_DEFS.collision(name, boss):
-                        self.lbl_bosshealth.setText(str(int(self.lbl_bosshealth.text())-5)) #0 cuz there can only be 1 boss
+                        self.dmg = int(self.lbl_bosshealth.text())-5
+                        if self.dmg < 0:
+                            self.dmg = 0
+                        self.lbl_bosshealth.setText(str(self.dmg)) #0 cuz there can only be 1 boss
                         try:
                             if self.lbl_bossname.text() == "The Ghost of the Forest":
                                 self.lbl_bosshealthbar.setFixedSize(int(self.lbl_bosshealth.text())*6, 41)
@@ -2509,6 +2571,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.lbl_imstillstandingcooldown.setText("")
             self.imstillstandingtimer.stop()
             self.imstillstandingused = False
+            
+#Six Hundred Strike
+
 
 #ESCAPE MENU CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 
