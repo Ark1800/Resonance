@@ -2,15 +2,6 @@
 # Date: 2024-12-07
 # Program Details: This Program is a fully functional wave based attack game WITH a miniboss and a final boss it is called resonance and you collect music discs and items for power
 
-#sunday
-#1. add as many items as possible
-#-6 cds
-#ADD TO GOOGLE DRIVE
-
-#monday
-#2. add score
-#3. add esc menu
-
 import os, sys, ULTIMATE_DEFS, enemies, random, items
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import manager
@@ -39,8 +30,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.musiccheckertimer.start(500)
         #self.lbl_wave.setText("2")
         
-#SETUP CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+#SETUP CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     def setup(self):
+        self.pause_buttons = [self.btn_resume, self.btn_title, self.lbl_titlename, self.btn_exit]
+        for i, button in enumerate(self.pause_buttons):
+            button.setVisible(False)
         self.ui = [self.lbl_bosshealthbarbg, self.lbl_bosshealthbar, self.lbl_bossheartnobg, self.lbl_bosshealth, self.lbl_bossname, self.lbl_healthbarbg,  self.lbl_healthbar, self.lbl_heartnobg, self.lbl_playerhealth, self.lbl_player, self.lbl_wave, self.lbl_yapyapyap, self.lbl_weapon_1, self.lbl_weapon_2, self.lbl_weapon_3, self.lbl_weapon_4, self.lbl_weapon_5, self.lbl_weapon_6, self.lbl_weapon_7, self.lbl_weapon_8, self.lbl_bowcooldown, self.lbl_bowability, self.lbl_score, self.lbl_scorename, self.lbl_wave, self.lbl_wavename, self.lbl_wavename_2]
         self.choices = [self.lbl_choice1_backround, self.lbl_choice1_title, self.lbl_choice1_image, self.lbl_choice1_description, self.btn_choice1, self.lbl_choice2_backround, self.lbl_choice2_title, self.lbl_choice2_image, self.lbl_choice2_description, self.btn_choice2, self.lbl_choice3_backround, self.lbl_choice3_title, self.lbl_choice3_image, self.lbl_choice3_description, self.btn_choice3]
         for i, name in enumerate(self.choices):
@@ -100,6 +94,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.playerattackdmg = 5
         self.rangedattackdmg = 3 
         self.playerspeed = 1
+        self.score = 0
+        self.lbl_score.setText(str(self.score))
         self.enemy_ranged_attacks()
         self.enemy_ranged_timers = []  # List to store timers for mages 
         self.enemy_checking_timer = QTimer()
@@ -124,12 +120,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         cyborgheart = items.item(QPixmap(u"images/cyborgheart.jpg"), "cyborgheart.jpg", "cyborgheart", "Cyborg Heart", "A mechanical heart that \n increases efficiency of \n all bodily systems, \n raises all stats by 1", "background-color: rgb(255, 85, 255);", 1, 1, 1, 1, 0)
         #discs
         backinblack = items.item(QPixmap(u"images/backinblack.png"), "backinblack.png", "backinblack", "Back in Black", "A special disc that \n when equipped can be \n used to activate \n damaging pillars of fire \n that periodically deal \n damage for 15 seconds \n (not affected by def)", "background-color: rgb(170, 170, 255);", 0, 0, 0, 0, 0)
-        thickofit = items.item(QPixmap(u"images/thickofit.jpg"), "thickofit.jpg", "thickofit", "Thick of It", "A special disc that \n when equipped can be \n used to repel \n minor enemies for \n 30 seconds", "background-color: rgb(170, 170, 255);", 0, 0, 0, 0, 0)
+        thickofit = items.item(QPixmap(u"images/thickofit.jpg"), "thickofit.jpg", "thickofit", "Thick of It", "A special disc that \n when equipped can be \n used to repel minor \n enemies for 30 seconds \n when enemies reach an \n edge they will be \n knocked to middle", "background-color: rgb(170, 170, 255);", 0, 0, 0, 0, 0)
         imstillstanding = items.item(QPixmap(u"images/imstillstanding.jpg"), "imstillstanding.jpg", "imstillstanding", "I S Standing", "A special disc that \n when equipped can be \n used to revive \n yourself on 25 hp if \n you take a fatal blow \n and making you \n invincible for 10 seconds", "background-color: rgb(170, 170, 255);", 0, 0, 0, 0, 0)
         #healthpot
         healthpot = items.healthpot(QPixmap(u"images/healthpot.jpg"), "Health Potion", "A potion that heals \n 50 health instantly", "background-color: rgb(204, 0, 153);")
-        #self.allitems = [timesword,  mosquitorapier, futurebow, slimebow, ironarmor, thornmail, wingedrunners, ironboots, armoredheart, cyborgheart, backinblack, thickofit, imstillstanding, healthpot, healthpot, healthpot, healthpot]#NEED MORE ITEMS
-        self.allitems = [timesword, imstillstanding, mosquitorapier]
+        #self.allitems = [timesword,  mosquitorapier, futurebow, slimebow, ironarmor, thornmail, wingedrunners, ironboots, armoredheart, cyborgheart, backinblack, thickofit, imstillstanding, healthpot, healthpot, healthpot, healthpot, healthpot, healthpot]
+        self.allitems = [timesword, thickofit, futurebow]
         self.fireball_list = []
         self.fireball_timers = [QTimer()]*10
         self.sonic_movement()
@@ -772,6 +768,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.bossdeath()
 #death
     def bossdeath(self):
+        #score
+        self.score += 10000
+        self.lbl_score.setText(str(self.score))
         #miniboss death
         self.bossdead = True
         #miniboss removal
@@ -1159,6 +1158,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             
 #death
     def minibossdeath(self):
+        #score
+        self.score += 5000
+        self.lbl_score.setText(str(self.score))
         #miniboss death
         self.minibossdead = True
         #miniboss removal
@@ -1444,17 +1446,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                     x = 0
                                     y = 100
                                 if enemy.x() < 30:
-                                    enemy.move(enemy.x()+speed, enemy.y())
-                                    hplabel.move(hplabel.x()+speed, hplabel.y())
+                                    enemy.move(700, enemy.y())
+                                    hplabel.move(700, hplabel.y())
                                 if enemy.x() > 1380:
-                                    enemy.move(enemy.x()-speed, enemy.y())
-                                    hplabel.move(hplabel.x()-speed, hplabel.y())
+                                    enemy.move(700, enemy.y())
+                                    hplabel.move(700, hplabel.y())
                                 if enemy.y() < 30:
-                                    enemy.move(enemy.x(), enemy.y()+speed)
-                                    hplabel.move(hplabel.x(), hplabel.y()+speed)
+                                    enemy.move(enemy.x(), 400)
+                                    hplabel.move(hplabel.x(), 400)
                                 if enemy.y() > 850:
-                                    enemy.move(enemy.x(), enemy.y()-speed)
-                                    hplabel.move(hplabel.x(), hplabel.y()-speed)
+                                    enemy.move(enemy.x(), 400)
+                                    hplabel.move(hplabel.x(), 400)
                         except:
                             pass
                     elif self.enemyintlist[i] == 2: #mage movement
@@ -1537,6 +1539,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                     self.gameover()
                     
     def enemydeath(self, i):
+        #score
+        self.score += 500
+        self.lbl_score.setText(str(self.score))
+        #deletion
         self.enemylabels_list[i].deleteLater()
         self.enemyhplabels_list[i].deleteLater()
         self.enemyclass_list.pop(i)
@@ -1632,6 +1638,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def keyPressEvent(self, event):
         if event.key() not in self.keypress:
             self.keypress.append(event.key())
+        #esc button for esc menu
+        if event.key() == Qt.Key.Key_Escape:
+            self.pausestate = True
+            for i, button in enumerate(self.pause_buttons):
+                button.setVisible(True)
+                button.raise_()
         #enter button for pressing dialogue
         if self.enter == True:
             if event.key() == Qt.Key.Key_Return:
@@ -1953,63 +1965,64 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
 #SMOOVVEMENT CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     def player_move(self):
-        move_x = ((Qt.Key.Key_D in self.keypress) * self.playerspeed) + ((Qt.Key.Key_A in self.keypress)* -self.playerspeed)
-        move_y = ((Qt.Key.Key_W in self.keypress) * -self.playerspeed) + ((Qt.Key.Key_S in self.keypress)* self.playerspeed)
-        if self.playerconfused == False:
-            self.lbl_player.move(self.lbl_player.x()+move_x,self.lbl_player.y()+move_y)
-            #moving attack labels
-            for i, attack in enumerate(self.attack_list):
-                attack.move(attack.x()+move_x,attack.y()+move_y)
-        elif self.playerconfused == True:
-            self.lbl_player.move(self.lbl_player.x()-move_x,self.lbl_player.y()-move_y)
-            for i, attack in enumerate(self.attack_list):
-                attack.move(attack.x()-move_x,attack.y()-move_y)
-            self.confused.move(self.confused.x()-move_x,self.confused.y()-move_y)
-        #checking if the player has gone out of bounds and moving them to other side of screen
-        if self.lbl_player.x() < 0:
-            #moving player
-            self.lbl_player.move(self.lbl_player.x()+1420, self.lbl_player.y())
-            #moving attack labels
-            for i, attack in enumerate(self.attack_list):
-                attack.move(attack.x()+1420,attack.y())
-            if self.playerconfused == True:
-                self.confused.move(self.confused.x()+1420, self.confused.y())
-        elif self.lbl_player.x() > 1420:
-            self.lbl_player.move(self.lbl_player.x()-1420, self.lbl_player.y())
-            for i, attack in enumerate(self.attack_list):
-                attack.move(attack.x()-1420,attack.y())
-            if self.playerconfused == True:
-                self.confused.move(self.confused.x()-1420, self.confused.y())
-        elif self.lbl_player.y() < 0:
-            self.lbl_player.move(self.lbl_player.x(), self.lbl_player.y()+950)
-            for i, attack in enumerate(self.attack_list):
-                attack.move(attack.x(),attack.y()+950)
-            if self.playerconfused == True:
-                self.confused.move(self.confused.x(), self.confused.y()+950)    
-        elif self.lbl_player.y() > 950:
-            self.lbl_player.move(self.lbl_player.x(), self.lbl_player.y()-950)
-            for i, attack in enumerate(self.attack_list):
-                attack.move(attack.x(),attack.y()-950)
-            if self.playerconfused == True:
-                self.confused.move(self.confused.x(), self.confused.y()-950)
-        #checking if the player has collided with the boss
-        if self.bossdead == False:
-            if self.playerinvicible == False:
-                if ULTIMATE_DEFS.collision(self.lbl_player, self.boss_label):
-                    self.playerhealth -= self.bossclass.attack+self.playerdefense
-                    self.lbl_healthbar.setFixedSize(self.playerhealth * 4, 41)
-                    self.lbl_playerhealth.setText(str(self.playerhealth))
-                    if self.lbl_playerhealth.text() <= "0":
-                        if self.imstillstandingequipped == True and self.imstillstandingused == False and self.TOIcompleted == True and self.BIBcompleted:
-                            mixer.music.stop()
-                            self.play_music("audio/imstillstanding.mp3")
-                            self.imstillstanding()
-                        else:
-                            self.gameover()
-                    if self.lbl_player.x() < self.boss_label.x():
-                        self.lbl_player.move(self.lbl_player.x()-100, self.lbl_player.y()-100)
-                    elif self.lbl_player.x() > self.boss_label.x():
-                        self.lbl_player.move(self.lbl_player.x()+100, self.lbl_player.y()+100)
+        if self.pausestate == False:
+            move_x = ((Qt.Key.Key_D in self.keypress) * self.playerspeed) + ((Qt.Key.Key_A in self.keypress)* -self.playerspeed)
+            move_y = ((Qt.Key.Key_W in self.keypress) * -self.playerspeed) + ((Qt.Key.Key_S in self.keypress)* self.playerspeed)
+            if self.playerconfused == False:
+                self.lbl_player.move(self.lbl_player.x()+move_x,self.lbl_player.y()+move_y)
+                #moving attack labels
+                for i, attack in enumerate(self.attack_list):
+                    attack.move(attack.x()+move_x,attack.y()+move_y)
+            elif self.playerconfused == True:
+                self.lbl_player.move(self.lbl_player.x()-move_x,self.lbl_player.y()-move_y)
+                for i, attack in enumerate(self.attack_list):
+                    attack.move(attack.x()-move_x,attack.y()-move_y)
+                self.confused.move(self.confused.x()-move_x,self.confused.y()-move_y)
+            #checking if the player has gone out of bounds and moving them to other side of screen
+            if self.lbl_player.x() < 0:
+                #moving player
+                self.lbl_player.move(self.lbl_player.x()+1420, self.lbl_player.y())
+                #moving attack labels
+                for i, attack in enumerate(self.attack_list):
+                    attack.move(attack.x()+1420,attack.y())
+                if self.playerconfused == True:
+                    self.confused.move(self.confused.x()+1420, self.confused.y())
+            elif self.lbl_player.x() > 1420:
+                self.lbl_player.move(self.lbl_player.x()-1420, self.lbl_player.y())
+                for i, attack in enumerate(self.attack_list):
+                    attack.move(attack.x()-1420,attack.y())
+                if self.playerconfused == True:
+                    self.confused.move(self.confused.x()-1420, self.confused.y())
+            elif self.lbl_player.y() < 0:
+                self.lbl_player.move(self.lbl_player.x(), self.lbl_player.y()+950)
+                for i, attack in enumerate(self.attack_list):
+                    attack.move(attack.x(),attack.y()+950)
+                if self.playerconfused == True:
+                    self.confused.move(self.confused.x(), self.confused.y()+950)    
+            elif self.lbl_player.y() > 950:
+                self.lbl_player.move(self.lbl_player.x(), self.lbl_player.y()-950)
+                for i, attack in enumerate(self.attack_list):
+                    attack.move(attack.x(),attack.y()-950)
+                if self.playerconfused == True:
+                    self.confused.move(self.confused.x(), self.confused.y()-950)
+            #checking if the player has collided with the boss
+            if self.bossdead == False:
+                if self.playerinvicible == False:
+                    if ULTIMATE_DEFS.collision(self.lbl_player, self.boss_label):
+                        self.playerhealth -= self.bossclass.attack+self.playerdefense
+                        self.lbl_healthbar.setFixedSize(self.playerhealth * 4, 41)
+                        self.lbl_playerhealth.setText(str(self.playerhealth))
+                        if self.lbl_playerhealth.text() <= "0":
+                            if self.imstillstandingequipped == True and self.imstillstandingused == False and self.TOIcompleted == True and self.BIBcompleted:
+                                mixer.music.stop()
+                                self.play_music("audio/imstillstanding.mp3")
+                                self.imstillstanding()
+                            else:
+                                self.gameover()
+                        if self.lbl_player.x() < self.boss_label.x():
+                            self.lbl_player.move(self.lbl_player.x()-100, self.lbl_player.y()-100)
+                        elif self.lbl_player.x() > self.boss_label.x():
+                            self.lbl_player.move(self.lbl_player.x()+100, self.lbl_player.y()+100)
             
 #INVENTORY CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     def inventory(self):
@@ -2496,3 +2509,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.lbl_imstillstandingcooldown.setText("")
             self.imstillstandingtimer.stop()
             self.imstillstandingused = False
+
+#ESCAPE MENU CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+
+    def btn_resume_a(self):
+        self.pausestate = False
+        for i, button in enumerate(self.pause_buttons):
+            button.setVisible(False)
+    
+    def btn_title_a(self):
+        self.gameover()
+        manager.widget.setCurrentWidget(manager.screen_startscreen)
+    
+    def btn_exit_a(self):
+        exit()

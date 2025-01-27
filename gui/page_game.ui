@@ -520,7 +520,7 @@
      </font>
     </property>
     <property name="text">
-     <string>0000000000</string>
+     <string>0</string>
     </property>
    </widget>
    <widget class="QLabel" name="lbl_yapyapyap">
@@ -1087,7 +1087,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Disc 1</string>
+     <string>Disc 2</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignmentFlag::AlignCenter</set>
@@ -1246,6 +1246,94 @@
      <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QPushButton" name="btn_resume">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>310</y>
+      <width>311</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>40</pointsize>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::FocusPolicy::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 170, 255);</string>
+    </property>
+    <property name="text">
+     <string>Resume</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_title">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>440</y>
+      <width>311</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>40</pointsize>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::FocusPolicy::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 170, 255);</string>
+    </property>
+    <property name="text">
+     <string>Title</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="btn_exit">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>570</y>
+      <width>311</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>40</pointsize>
+     </font>
+    </property>
+    <property name="focusPolicy">
+     <enum>Qt::FocusPolicy::NoFocus</enum>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 170, 255);</string>
+    </property>
+    <property name="text">
+     <string>Exit</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_titlename">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>530</y>
+      <width>291</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>WARNING: RESETS PROGRESS</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
+   </widget>
    <zorder>lbl_backround</zorder>
    <zorder>lbl_player</zorder>
    <zorder>lst_slot_1</zorder>
@@ -1316,6 +1404,10 @@
    <zorder>lbl_thickofitcooldown</zorder>
    <zorder>lbl_imstillstandingability</zorder>
    <zorder>lbl_imstillstandingcooldown</zorder>
+   <zorder>btn_resume</zorder>
+   <zorder>btn_title</zorder>
+   <zorder>btn_exit</zorder>
+   <zorder>lbl_titlename</zorder>
   </widget>
  </widget>
  <resources/>
@@ -1592,11 +1684,62 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>btn_resume</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>btn_resume_a()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>646</x>
+     <y>371</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1650</x>
+     <y>401</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_title</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>btn_title_a()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>769</x>
+     <y>500</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1650</x>
+     <y>516</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_exit</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>btn_exit_a()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>779</x>
+     <y>615</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1650</x>
+     <y>580</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>lst_slots_a()</slot>
   <slot>btn_choice1_a()</slot>
   <slot>btn_choice2_a()</slot>
   <slot>btn_choice3_a()</slot>
+  <slot>btn_resume_a()</slot>
+  <slot>btn_title_a()</slot>
+  <slot>btn_exit_a()</slot>
  </slots>
 </ui>
