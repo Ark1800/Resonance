@@ -142,7 +142,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #healthpot
         healthpot = items.healthpot(QPixmap(u"images/healthpot.jpg"), "Health Potion", "A potion that heals \n 50 health instantly", "background-color: rgb(204, 0, 153);")
         self.allitems = [timesword,  mosquitorapier, futurebow, slimebow, ironarmor, thornmail, wingedrunners, ironboots, armoredheart, cyborgheart, backinblack, thickofit, imstillstanding, healthpot, healthpot, healthpot, healthpot, healthpot, healthpot]
-        self.allitems = [timesword, sixhundredstrike, futurebow]
         self.fireball_list = []
         self.fireball_timers = [QTimer()]*10
         self.sonic_movement()
@@ -1844,6 +1843,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             self.lifesteal()
             except:
                 pass
+            self.play_sound_effect("audio/swordslash.mp3")
             QTimer.singleShot(200,lambda:self.attackpt2(label))
         else:
             pass
@@ -1887,6 +1887,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def rangedattack(self): 
         if self.pausestate == False:
             if self.rangedvalid == True:
+                self.play_sound_effect("audio/arrowrelease.mp3")
                 #creation
                 self.ranged = QLabel(self.centralwidget)
                 #setting size
@@ -2463,6 +2464,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         mixer.music.set_volume(volume)
         mixer.music.play()
     
+    def play_sound_effect(self,file_path, volume=0.5):
+        sound_effect = mixer.Sound(file_path)
+        sound_effect.set_volume(volume)
+        sound_effect.play()
+            
     def loop_music(self):
         if not mixer.music.get_busy():
             self.play_music("audio/bgmusic.mp3")

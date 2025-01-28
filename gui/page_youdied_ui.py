@@ -65,7 +65,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Page 1", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Resonance", None))
         self.btn_respawn.setText(QCoreApplication.translate("MainWindow", u"Respawn", None))
         self.lbl_backround.setText("")
         self.btn_title.setText(QCoreApplication.translate("MainWindow", u"Title Screen", None))

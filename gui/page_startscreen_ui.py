@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'page_startscreen.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.2
+## Created by: Qt User Interface Compiler version 6.8.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -88,7 +88,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Page 1", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Resonance", None))
         self.lbl_player.setText("")
         self.lbl_backround.setText("")
         self.lbl_title.setText(QCoreApplication.translate("MainWindow", u"Resonance", None))
