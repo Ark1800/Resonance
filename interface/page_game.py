@@ -140,8 +140,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         sixhundredstrike = items.item(QPixmap(u"images/sixhundredstrike.jpg"), "sixhundredstrike.jpg", "sixhundredstrike", "600 Strike", "A special disc that \n when equipped can be \n used to deal 10 damage \n periodically to the \n highest health enemy on \n screen (note only works if \n there are enemies present)", "background-color: rgb(170, 170, 255);", 0, 0, 0, 0, 0)
         #healthpot
         healthpot = items.healthpot(QPixmap(u"images/healthpot.jpg"), "Health Potion", "A potion that heals \n 50 health instantly", "background-color: rgb(204, 0, 153);")
-        self.allitems = [timesword,  mosquitorapier, futurebow, slimebow, ironarmor, thornmail, wingedrunners, ironboots, armoredheart, cyborgheart, backinblack, thickofit, imstillstanding, healthpot, healthpot, healthpot, healthpot, healthpot, healthpot]
-        #self.allitems = [armoredheart, futurebow, thornmail]
+        self.allitems = [timesword,  mosquitorapier, futurebow, slimebow, ironarmor, thornmail, wingedrunners, ironboots, armoredheart, cyborgheart, backinblack, thickofit, imstillstanding, sixhundredstrike, healthpot, healthpot, healthpot, healthpot, healthpot, healthpot]
+        #self.allitems = [timesword, futurebow, thornmail]
         self.fireball_list = []
         self.fireball_timers = [QTimer()]*10
         self.sonic_movement()
@@ -165,7 +165,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.sixhundredstrikevalid = True
         self.sixhundredstrikecooldown = False
         self.inventoryunequipchecker()
-        self.lbl_wave.setText("5")
+        self.lbl_wave.setText("4")
 
 #HEALTHPOT CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     def healthpot(self):
