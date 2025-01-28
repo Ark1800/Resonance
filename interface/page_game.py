@@ -19,6 +19,9 @@
 #14. STARTSCREEN CODE
 #15. YOUDIED CODE
 
+#six hundred strike
+#finishing ISS, TOI, etc.
+
 import os, sys, ULTIMATE_DEFS, enemies, random, items
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import manager
@@ -138,11 +141,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         backinblack = items.item(QPixmap(u"images/backinblack.png"), "backinblack.png", "backinblack", "Back in Black", "A special disc that \n when equipped can be \n used to activate \n damaging pillars of fire \n that periodically deal \n damage for 15 seconds \n (not affected by def)", "background-color: rgb(170, 170, 255);", 0, 0, 0, 0, 0)
         thickofit = items.item(QPixmap(u"images/thickofit.jpg"), "thickofit.jpg", "thickofit", "Thick of It", "A special disc that \n when equipped can be \n used to repel minor \n enemies for 30 seconds \n when enemies reach an \n edge they will be \n knocked to middle", "background-color: rgb(170, 170, 255);", 0, 0, 0, 0, 0)
         imstillstanding = items.item(QPixmap(u"images/imstillstanding.jpg"), "imstillstanding.jpg", "imstillstanding", "I S Standing", "A special disc that \n when equipped can be \n used to revive \n yourself on 25 hp if \n you take a fatal blow \n and making you \n invincible for 10 seconds", "background-color: rgb(170, 170, 255);", 0, 0, 0, 0, 0)
-        sixhundredstrike = items.item
+        sixhundredstrike = items.item(QPixmap(u"images/sixhundredstrike.jpg"), "sixhundredstrike.jpg", "sixhundredstrike", "600 Strike", "A special disc that \n when equipped can be \n used to deal 10 damage \n periodically to the \n highest health enemy on \n screen (note only works if \n there are enemies present)", "background-color: rgb(170, 170, 255);", 0, 0, 0, 0, 0)
         #healthpot
         healthpot = items.healthpot(QPixmap(u"images/healthpot.jpg"), "Health Potion", "A potion that heals \n 50 health instantly", "background-color: rgb(204, 0, 153);")
         self.allitems = [timesword,  mosquitorapier, futurebow, slimebow, ironarmor, thornmail, wingedrunners, ironboots, armoredheart, cyborgheart, backinblack, thickofit, imstillstanding, healthpot, healthpot, healthpot, healthpot, healthpot, healthpot]
-        #self.allitems = [timesword, thickofit, futurebow]
+        self.allitems = [timesword, sixhundredstrike, futurebow]
         self.fireball_list = []
         self.fireball_timers = [QTimer()]*10
         self.sonic_movement()
@@ -161,6 +164,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.imstillstandingused = False
         self.ISScompleted = True
         self.playerinvicible = False
+        self.sixhundredstrikeused = False
+        self.SHScompleted = True
+        self.sixhundredstrikevalid = True
+        self.sixhundredstrikecooldown = False
         self.inventoryunequipchecker()
 
 #HEALTHPOT CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
@@ -1692,32 +1699,50 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.dialogue()
         #ability buttons (im still standing is auto activated so it doesnt need a keybind)
         if event.key() == Qt.Key.Key_Z:
-            if self.disc1 == "backinblack" and self.backinblackequipped == True and self.backinblackused == False and self.TOIcompleted == True:
+            if self.disc1 == "backinblack" and self.backinblackequipped == True and self.backinblackused == False and self.TOIcompleted == True and self.ISScompleted == True and self.SHScompleted == True:
                 mixer.music.stop()
                 self.play_music("audio/backinblack.mp3")
                 self.backinblack()
-            if self.disc1 == "thickofit" and self.thickofitequipped == True and self.thickofitused == False and self.BIBcompleted == True:
+            if self.disc1 == "thickofit" and self.thickofitequipped == True and self.thickofitused == False and self.BIBcompleted == True and self.ISScompleted == True and self.SHScompleted == True:
                 mixer.music.stop()
                 self.play_music("audio/thickofit.mp3")
                 self.thickofit()
+            if self.enemylabels_list != [] or self.boss_labels != []:
+                print(self.sixhundredstrikeused)
+                print(self.disc1)
+                print(self.sixhundredstrikeequipped)
+                if self.disc1 == "sixhundredstrike" and self.sixhundredstrikeequipped == True and self.sixhundredstrikeused == False and self.BIBcompleted == True and self.ISScompleted == True and self.TOIcompleted == True:
+                    mixer.music.stop()
+                    self.play_music("audio/sixhundredstrike.mp3")
+                    self.sixhundredstrike()                        
         if event.key() == Qt.Key.Key_X:
-            if self.disc2 == "backinblack" and self.backinblackequipped == True and self.backinblackused == False and self.TOIcompleted == True:
+            if self.disc2 == "backinblack" and self.backinblackequipped == True and self.backinblackused == False and self.TOIcompleted == True and self.ISScompleted == True and self.SHScompleted == True:
                 mixer.music.stop()
                 self.play_music("audio/backinblack.mp3")
                 self.backinblack()
-            if self.disc2 == "thickofit" and self.thickofitequipped == True and self.thickofitused == False and self.BIBcompleted == True:
+            if self.disc2 == "thickofit" and self.thickofitequipped == True and self.thickofitused == False and self.BIBcompleted == True and self.ISScompleted == True and self.SHScompleted == True:
                 mixer.music.stop()
                 self.play_music("audio/thickofit.mp3")
                 self.thickofit()
+            if self.enemylabels_list != [] or self.boss_labels != []:
+                if self.disc2 == "sixhundredstrike" and self.sixhundredstrikeequipped == True and self.sixhundredstrikeused == False and self.BIBcompleted == True and self.ISScompleted == True and self.TOIcompleted == True:
+                    mixer.music.stop()
+                    self.play_music("audio/sixhundredstrike.mp3")
+                    self.sixhundredstrike()  
         if event.key() == Qt.Key.Key_C:
-            if self.disc3 == "backinblack" and self.backinblackequipped == True and self.backinblackused == False and self.TOIcompleted == True:
+            if self.disc3 == "backinblack" and self.backinblackequipped == True and self.backinblackused == False and self.TOIcompleted == True and self.ISScompleted == True and self.SHScompleted == True:
                 mixer.music.stop()
                 self.play_music("audio/backinblack.mp3")
                 self.backinblack()
-            if self.disc3 == "thickofit" and self.thickofitequipped == True and self.thickofitused == False and self.BIBcompleted == True:
+            if self.disc3 == "thickofit" and self.thickofitequipped == True and self.thickofitused == False and self.BIBcompleted == True and self.ISScompleted == True and self.SHScompleted == True:
                 mixer.music.stop()
                 self.play_music("audio/thickofit.mp3")
                 self.thickofit()
+            if self.enemylabels_list != [] or self.boss_labels != []:
+                if self.disc3 == "sixhundredstrike" and self.sixhundredstrikeequipped == True and self.sixhundredstrikeused == False and self.BIBcompleted == True and self.ISScompleted == True and self.TOIcompleted == True:
+                    mixer.music.stop()
+                    self.play_music("audio/sixhundredstrike.mp3")
+                    self.sixhundredstrike()  
         #choosing which way character is facing
         #topleft
         if Qt.Key.Key_A in self.keypress and Qt.Key.Key_W in self.keypress:
@@ -2146,7 +2171,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             elif self.slot_text==("armoredheart") or self.slot_text==("cyborgheart"):
                 self.lifeforce = True
             #CD
-            elif self.slot_text==("backinblack") or self.slot_text==("thickofit") or self.slot_text==("imstillstanding"):
+            elif self.slot_text==("backinblack") or self.slot_text==("thickofit") or self.slot_text==("imstillstanding") or self.slot_text==("sixhundredstrike"):
                 self.cd = True
             #logic to switch or not switch inventory
             if self.slot_text==("blank") or self.slot_text==("trash"): #needs to check if it is something that can be moved
@@ -2293,6 +2318,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.imstillstandingequipped = False
             self.lbl_imstillstandingability.setVisible(False)
             self.lbl_imstillstandingcooldown.setVisible(False)
+        #sixhundredstrike
+        if self.lst_slot_song1.item(0).text() != "sixhundredstrike" and self.lst_slot_song2.item(0).text() != "sixhundredstrike" and self.lst_slot_song3.item(0).text() != "sixhundredstrike":
+            self.sixhundredstrikeequipped = False
+            self.lbl_sixhundredstrikeability.setVisible(False)
+            self.lbl_sixhundredstrikecooldown.setVisible(False)
             
     def addingitem(self):
         #adding item
@@ -2379,6 +2409,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.imstillstandingequipped = True
             self.lbl_imstillstandingability.setVisible(True)
             self.lbl_imstillstandingcooldown.setVisible(True)
+        #six hundred strike
+        if self.lst_slot_song1.item(0).text() == "sixhundredstrike":
+            self.disc1 = "sixhundredstrike"
+        elif self.lst_slot_song2.item(0).text() == "sixhundredstrike":
+            self.disc2 = "sixhundredstrike"
+        elif self.lst_slot_song3.item(0).text() == "sixhundredstrike":
+            self.disc3 = "sixhundredstrike"
+        if self.lst_slot_song1.item(0).text() == "sixhundredstrike" or self.lst_slot_song2.item(0).text() == "sixhundredstrike" or self.lst_slot_song3.item(0).text() == "sixhundredstrike":
+            self.sixhundredstrikeequipped = True
+            self.lbl_sixhundredstrikeability.setVisible(True)
+            self.lbl_sixhundredstrikecooldown.setVisible(True)
             
 #PAUSE CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE + GAMEOVERRRRRRRRRRRRRRRRRRRRRRRR
     def pause(self):
@@ -2461,7 +2502,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             #enemies
             for i, enemy in enumerate(self.enemylabels_list):
                 if ULTIMATE_DEFS.collision(name, enemy):   
-                    self.dmg = int(self.enemyhplabels_list[i].text())-5
+                    self.dmg = int(self.enemyhplabels_list[i].text())-15
                     if self.dmg < 0:
                         self.dmg = 0
                     self.enemyhplabels_list[i].setText(str(self.dmg))
@@ -2473,7 +2514,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             try: 
                 for i, boss in enumerate(self.boss_labels):
                     if ULTIMATE_DEFS.collision(name, boss):
-                        self.dmg = int(self.lbl_bosshealth.text())-5
+                        self.dmg = int(self.lbl_bosshealth.text())-15
                         if self.dmg < 0:
                             self.dmg = 0
                         self.lbl_bosshealth.setText(str(self.dmg)) #0 cuz there can only be 1 boss
@@ -2573,7 +2614,67 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.imstillstandingused = False
             
 #Six Hundred Strike
-
+    def sixhundredstrike(self):
+        if self.enemylabels_list != [] or self.boss_labels != []:
+            if self.sixhundredstrikecooldown == False:
+                self.allenemieshp = []
+                self.enemyhplabels = []
+                self.allenemieslabels = []
+                self.sixhundredstrikeused = True
+                self.SHScompleted = False
+                for i, name in enumerate(self.enemyhplabels_list):
+                    self.allenemieshp.append(int(name.text()))
+                    self.enemyhplabels.append(name)
+                    self.allenemieslabels.append(self.enemylabels_list[i])
+                if self.minibossdead == False:
+                    self.allenemieshp.append(int(self.lbl_bosshealth.text()))
+                    self.enemyhplabels.append(self.lbl_bosshealth)
+                    self.allenemieslabels.append(self.miniboss_label)
+                elif self.bossdead == False:
+                    self.allenemieshp.append(int(self.lbl_bosshealth.text()))
+                    self.enemyhplabels.append(self.lbl_bosshealth)
+                    self.allenemieslabels.append(self.boss_label)
+                largest = max(self.allenemieshp)
+                index = self.allenemieshp.index(largest)
+                enemy = self.allenemieslabels[index]
+                trident = QLabel(self.centralwidget)
+                trident.setFixedSize(100, 100)
+                trident.setPixmap(QPixmap(u"images/trident.jpg"))
+                trident.setScaledContents(True)
+                trident.setVisible(True)
+                trident.move(enemy.x(), enemy.y())
+                self.enemyhplabels[index].setText(str(int(largest)-10))
+                if int(self.enemyhplabels[index].text()) <= 0:
+                    self.enemydeath(index)
+                if self.sixhundredstrikevalid == True:
+                    print("run")
+                    QTimer.singleShot(20000, lambda: self.sixhundredstrikecooldownfunction())
+                    self.sixhundredstrikevalid = False
+                QTimer.singleShot(500, lambda: self.sixhundredstrikerepeat(trident))
+            
+    def sixhundredstrikerepeat(self, trident): 
+        trident.deleteLater()
+        if self.sixhundredstrikecooldown == False:
+            QTimer.singleShot(3000, lambda: self.sixhundredstrike())
+    
+    def sixhundredstrikecooldownfunction(self):
+        self.SHScooldown = 80
+        self.SHScompleted = True
+        self.sixhundredstrikecooldown = True
+        self.play_music("audio/bgmusic.mp3")
+        self.sixhundredstriketimer = QTimer()
+        self.sixhundredstriketimer.timeout.connect(self.update_sixhundredstrike_cooldown)
+        self.sixhundredstriketimer.start(1000)
+    
+    def update_sixhundredstrike_cooldown(self):
+        self.SHScooldown -= 1
+        self.lbl_sixhundredstrikecooldown.setText(str(self.SHScooldown))
+        if self.SHScooldown == 0:
+            self.lbl_sixhundredstrikecooldown.setText("")
+            self.sixhundredstriketimer.stop()
+            self.sixhundredstrikecooldown = False
+            self.sixhundredstrikeused = False 
+            self.sixhundredstrikevalid = True
 
 #ESCAPE MENU CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 

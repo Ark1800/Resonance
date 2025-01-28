@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'page_game.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.7.2
+## Created by: Qt User Interface Compiler version 6.8.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -367,6 +367,17 @@ class Ui_MainWindow(object):
         self.lbl_titlename.setObjectName(u"lbl_titlename")
         self.lbl_titlename.setGeometry(QRect(600, 530, 291, 21))
         self.lbl_titlename.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.lbl_sixhundredstrikeability = QLabel(self.centralwidget)
+        self.lbl_sixhundredstrikeability.setObjectName(u"lbl_sixhundredstrikeability")
+        self.lbl_sixhundredstrikeability.setGeometry(QRect(690, 880, 51, 51))
+        self.lbl_sixhundredstrikeability.setPixmap(QPixmap(u"../images/sixhundredstrike.jpg"))
+        self.lbl_sixhundredstrikeability.setScaledContents(True)
+        self.lbl_sixhundredstrikecooldown = QLabel(self.centralwidget)
+        self.lbl_sixhundredstrikecooldown.setObjectName(u"lbl_sixhundredstrikecooldown")
+        self.lbl_sixhundredstrikecooldown.setGeometry(QRect(690, 880, 51, 51))
+        self.lbl_sixhundredstrikecooldown.setFont(font2)
+        self.lbl_sixhundredstrikecooldown.setStyleSheet(u"color: rgb(255, 255, 255);")
+        self.lbl_sixhundredstrikecooldown.setAlignment(Qt.AlignmentFlag.AlignCenter)
         MainWindow.setCentralWidget(self.centralwidget)
         self.lbl_backround.raise_()
         self.lbl_player.raise_()
@@ -442,6 +453,8 @@ class Ui_MainWindow(object):
         self.btn_title.raise_()
         self.btn_exit.raise_()
         self.lbl_titlename.raise_()
+        self.lbl_sixhundredstrikeability.raise_()
+        self.lbl_sixhundredstrikecooldown.raise_()
 
         self.retranslateUi(MainWindow)
         self.lst_slot_1.clicked.connect(MainWindow.lst_slots_a)
@@ -530,5 +543,7 @@ class Ui_MainWindow(object):
         self.btn_title.setText(QCoreApplication.translate("MainWindow", u"Title", None))
         self.btn_exit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
         self.lbl_titlename.setText(QCoreApplication.translate("MainWindow", u"WARNING: RESETS PROGRESS", None))
+        self.lbl_sixhundredstrikeability.setText("")
+        self.lbl_sixhundredstrikecooldown.setText("")
     # retranslateUi
 

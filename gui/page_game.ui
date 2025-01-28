@@ -1334,6 +1334,50 @@
      <set>Qt::AlignmentFlag::AlignCenter</set>
     </property>
    </widget>
+   <widget class="QLabel" name="lbl_sixhundredstrikeability">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>880</y>
+      <width>51</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="pixmap">
+     <pixmap>../images/sixhundredstrike.jpg</pixmap>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="lbl_sixhundredstrikecooldown">
+    <property name="geometry">
+     <rect>
+      <x>690</x>
+      <y>880</y>
+      <width>51</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(255, 255, 255);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignmentFlag::AlignCenter</set>
+    </property>
+   </widget>
    <zorder>lbl_backround</zorder>
    <zorder>lbl_player</zorder>
    <zorder>lst_slot_1</zorder>
@@ -1408,6 +1452,8 @@
    <zorder>btn_title</zorder>
    <zorder>btn_exit</zorder>
    <zorder>lbl_titlename</zorder>
+   <zorder>lbl_sixhundredstrikeability</zorder>
+   <zorder>lbl_sixhundredstrikecooldown</zorder>
   </widget>
  </widget>
  <resources/>
