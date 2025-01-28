@@ -165,7 +165,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.sixhundredstrikevalid = True
         self.sixhundredstrikecooldown = False
         self.inventoryunequipchecker()
-        self.lbl_wave.setText("4")
+        self.lbl_wave.setText("9")
 
 #HEALTHPOT CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     def healthpot(self):
