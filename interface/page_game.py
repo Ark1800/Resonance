@@ -19,9 +19,6 @@
 #14. STARTSCREEN CODE
 #15. YOUDIED CODE
 
-#six hundred strike
-#finishing ISS, TOI, etc.
-
 import os, sys, ULTIMATE_DEFS, enemies, random, items
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import manager
