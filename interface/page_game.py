@@ -1194,9 +1194,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             
 #death
     def minibossdeath(self):
-        #score
-        self.score += 5000
-        self.lbl_score.setText(str(self.score))
         #miniboss death
         self.minibossdead = True
         #miniboss removal
@@ -1239,6 +1236,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.fuzzieattacktimer.stop()
         except:
             pass
+        #score
+        self.score += 5000
+        self.lbl_score.setText(str(self.score))
         
         
 #ENEMY CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
