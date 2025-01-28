@@ -44,7 +44,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.musiccheckertimer = QTimer()
         self.musiccheckertimer.timeout.connect(self.loop_music)
         self.musiccheckertimer.start(500)
-        #self.lbl_wave.setText("2")
         
 #SETUP CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     def setup(self):
@@ -142,6 +141,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #healthpot
         healthpot = items.healthpot(QPixmap(u"images/healthpot.jpg"), "Health Potion", "A potion that heals \n 50 health instantly", "background-color: rgb(204, 0, 153);")
         self.allitems = [timesword,  mosquitorapier, futurebow, slimebow, ironarmor, thornmail, wingedrunners, ironboots, armoredheart, cyborgheart, backinblack, thickofit, imstillstanding, healthpot, healthpot, healthpot, healthpot, healthpot, healthpot]
+        #self.allitems = [armoredheart, futurebow, thornmail]
         self.fireball_list = []
         self.fireball_timers = [QTimer()]*10
         self.sonic_movement()
@@ -165,6 +165,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.sixhundredstrikevalid = True
         self.sixhundredstrikecooldown = False
         self.inventoryunequipchecker()
+        #self.lbl_wave.setText("")
 
 #HEALTHPOT CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     def healthpot(self):
@@ -580,7 +581,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     self.playerconfused = True
                     self.confusionvalid = False
                     QTimer.singleShot(10000, lambda: self.boss_confusionend())
-                    self.dmg = self.bossclass.rangedattack+self.playerdefense
+                    self.dmg = self.bossclass.rangedattack-self.playerdefense
                     if self.dmg < 0:
                         self.dmg = 0
                     self.playerhealth -= self.dmg
@@ -683,7 +684,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 self.warning_label1.setStyleSheet("")
             if self.playerinvicible == False:
                 if ULTIMATE_DEFS.collision(self.warning_label1, self.lbl_player):
-                    self.dmg = self.bossclass.rangedattack+self.playerdefense
+                    self.dmg = self.bossclass.rangedattack+-self.playerdefense
                     if self.dmg < 0:
                         self.dmg = 0
                     self.playerhealth -= self.dmg
@@ -1055,7 +1056,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         self.fuzzie.setVisible(False)
                         self.fuzzie.deleteLater()
                         self.fuzzievalid = False
-                        self.dmg = self.minibossclass.rangedattack+self.playerdefense
+                        self.dmg = self.minibossclass.rangedattack-self.playerdefense
                         if self.dmg < 0:
                             self.dmg = 0
                         self.playerhealth -= self.dmg
@@ -1131,7 +1132,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def minibossattackcollision(self):
         if self.playerinvicible == False:
             if ULTIMATE_DEFS.collision(self.lbl_player, self.miniboss_label):
-                self.dmg = self.minibossclass.attack+self.playerdefense
+                self.dmg = self.minibossclass.attack+-self.playerdefense
                 if self.dmg < 0:
                     self.dmg = 0
                 self.playerhealth -= self.dmg
@@ -1388,7 +1389,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     randy = random.randint(100, 800)
                     self.sonic_label.move (randx, randy)
                     self.sonichp_label.move(randx+38, randy-32)
-                    self.dmg = self.sonic.attack+self.playerdefense
+                    self.dmg = self.sonic.attack-self.playerdefense
                     if self.dmg < 0:
                         self.dmg = 0
                     self.playerhealth -= self.dmg
@@ -1485,16 +1486,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                     y = 100
                                 if enemy.x() < 30:
                                     enemy.move(700, enemy.y())
-                                    hplabel.move(700, hplabel.y())
+                                    if self.enemyintlist[i] == 0:
+                                        hplabel.move(700+30, hplabel.y())
+                                    elif self.enemyintlist[i] == 1:
+                                        hplabel.move(700+30, hplabel.y())
                                 if enemy.x() > 1380:
                                     enemy.move(700, enemy.y())
-                                    hplabel.move(700, hplabel.y())
+                                    if self.enemyintlist[i] == 0:
+                                        hplabel.move(700+30, hplabel.y())
+                                    elif self.enemyintlist[i] == 1:
+                                        hplabel.move(700+30, hplabel.y())
                                 if enemy.y() < 30:
                                     enemy.move(enemy.x(), 400)
-                                    hplabel.move(hplabel.x(), 400)
+                                    if self.enemyintlist[i] == 0:
+                                        hplabel.move(hplabel.x(), 400+8)
+                                    elif self.enemyintlist[i] == 1:
+                                        hplabel.move(hplabel.x(), 400-30)
                                 if enemy.y() > 850:
                                     enemy.move(enemy.x(), 400)
-                                    hplabel.move(hplabel.x(), 400)
+                                    if self.enemyintlist[i] == 0:
+                                        hplabel.move(hplabel.x(), 400+8)
+                                    elif self.enemyintlist[i] == 1:
+                                        hplabel.move(hplabel.x(), 400-30)
                         except:
                             pass
                     elif self.enemyintlist[i] == 2: #mage movement
@@ -1555,7 +1568,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                     self.attack_list[i].move(self.attack_list[i].x()-x, self.attack_list[i].y()-y)
                                 if self.playerconfused == True:
                                     self.confusion.move(self.confusion.x()-x, self.confusion.y()-y)
-                            self.dmg = attack+self.playerdefense
+                            self.dmg = attack-self.playerdefense
                             if self.dmg < 0:
                                 self.dmg = 0
                             self.playerhealth -= self.dmg
@@ -1648,7 +1661,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     if ULTIMATE_DEFS.collision(self.lbl_player, fireball):
                         self.fireball_timers[i].stop()
                         fireball.setVisible(False)
-                        self.dmg = self.enemyclass_list[i].rangedattack+self.playerdefense
+                        self.dmg = self.enemyclass_list[i].rangedattack-self.playerdefense
                         if self.dmg < 0:
                             self.dmg = 0
                         self.playerhealth -= self.dmg
@@ -2456,6 +2469,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.minibossdeath()
         elif self.bossdead == False:
             self.bossdeath()
+        score = self.lbl_score.text()
+        manager.screen_youdied.lbl_score.setText(str(score))
         manager.widget.setCurrentWidget(manager.screen_youdied)
 
 #MIXER CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
