@@ -141,7 +141,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #healthpot
         healthpot = items.healthpot(QPixmap(u"images/healthpot.jpg"), "Health Potion", "A potion that heals \n 50 health instantly", "background-color: rgb(204, 0, 153);")
         self.allitems = [timesword,  mosquitorapier, futurebow, slimebow, ironarmor, thornmail, wingedrunners, ironboots, armoredheart, cyborgheart, backinblack, thickofit, imstillstanding, sixhundredstrike, healthpot, healthpot, healthpot, healthpot, healthpot, healthpot]
-        self.allitems = [timesword, futurebow, thornmail]
+        #self.allitems = [timesword, futurebow, thornmail]
         self.fireball_list = []
         self.fireball_timers = [QTimer()]*10
         self.sonic_movement()
@@ -2364,7 +2364,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def itembuff(self):
         #basic buffs
         if self.lst_slot_melee.item(0).text() == "timesword":
-            self.playerattackdmg = self.playerattackdmg+50
+            self.playerattackdmg = self.playerattackdmg+3
             self.playerspeed = self.playerspeed+1
         elif self.lst_slot_ranged.item(0).text() == "futurebow":
             self.rangedattackdmg = self.rangedattackdmg+7
@@ -2478,6 +2478,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.bossdeath()
         score = self.lbl_score.text()
         manager.screen_youdied.lbl_score.setText(str(score))
+        self.BIBcooldown = 0
+        self.TOIcooldown = 0
+        self.ISScooldown = 0
+        self.SHScooldown = 0
+        mixer.music.stop()
+        self.play_music("audio/bgmusic.mp3")
         manager.widget.setCurrentWidget(manager.screen_youdied)
 
 #MIXER CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
