@@ -141,7 +141,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         #healthpot
         healthpot = items.healthpot(QPixmap(u"images/healthpot.jpg"), "Health Potion", "A potion that heals \n 50 health instantly", "background-color: rgb(204, 0, 153);")
         self.allitems = [timesword,  mosquitorapier, futurebow, slimebow, ironarmor, thornmail, wingedrunners, ironboots, armoredheart, cyborgheart, backinblack, thickofit, imstillstanding, sixhundredstrike, healthpot, healthpot, healthpot, healthpot, healthpot, healthpot]
-        #self.allitems = [timesword, futurebow, thornmail]
+        self.allitems = [timesword, futurebow, thornmail]
         self.fireball_list = []
         self.fireball_timers = [QTimer()]*10
         self.sonic_movement()
@@ -165,7 +165,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.sixhundredstrikevalid = True
         self.sixhundredstrikecooldown = False
         self.inventoryunequipchecker()
-        self.lbl_wave.setText("9")
+        self.lbl_wave.setText("4")
 
 #HEALTHPOT CODEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
     def healthpot(self):
@@ -854,19 +854,20 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.attacking_miniboss()
     
     def attacking_miniboss(self):
-        if self.minibossattacknumber > 0:
-            self.tired.setVisible(False)
-        attack = random.randint(1, 3)
-        if attack == 1:
-            self.sprintpartH = 1
-            self.sprintvalidH = True
-            self.miniboss_sprinthorizontal() #sprint attack
-        elif attack == 2:
-            self.fuzzierangedpart = 1
-            self.miniboss_fuzzieranged() #fuzzie inspired ranged attack
-        elif attack == 3:
-            self.miniboss_sprintvertical()
-        self.minibossattacknumber += 1
+        if self.minibossdead == False:
+            if self.minibossattacknumber > 0:
+                self.tired.setVisible(False)
+            attack = random.randint(1, 3)
+            if attack == 1:
+                self.sprintpartH = 1
+                self.sprintvalidH = True
+                self.miniboss_sprinthorizontal() #sprint attack
+            elif attack == 2:
+                self.fuzzierangedpart = 1
+                self.miniboss_fuzzieranged() #fuzzie inspired ranged attack
+            elif attack == 3:
+                self.miniboss_sprintvertical()
+            self.minibossattacknumber += 1
         
 #sprint vertical code
     def miniboss_sprintvertical(self):
@@ -1851,7 +1852,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         except:
                             pass
                         if int(self.lbl_bosshealth.text()) <= 0:
-                            self.bossdeath()
+                            if self.lbl_wave.text() == "5":
+                                self.minibossdeath()
+                            elif self.lbl_wave.text() == "10":
+                                self.bossdeath()
                         if self.playerlifesteal == True:
                             self.lifesteal()
             except:
@@ -2035,7 +2039,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 except:
                     pass
                 if int(self.lbl_bosshealth.text()) <= 0:
-                    self.bossdeath()
+                    if self.lbl_wave.text() == "5":
+                        self.minibossdeath()
+                    elif self.lbl_wave.text() == "10":
+                        self.bossdeath()
         except:
             pass
         #checking if the arrow has gone out of bounds
@@ -2357,7 +2364,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def itembuff(self):
         #basic buffs
         if self.lst_slot_melee.item(0).text() == "timesword":
-            self.playerattackdmg = self.playerattackdmg+3
+            self.playerattackdmg = self.playerattackdmg+50
             self.playerspeed = self.playerspeed+1
         elif self.lst_slot_ranged.item(0).text() == "futurebow":
             self.rangedattackdmg = self.rangedattackdmg+7
